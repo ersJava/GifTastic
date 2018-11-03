@@ -4,22 +4,78 @@
 <head>
   <meta charset="utf-8">
   <title>GifTastic</title>
+  <link rel="stylesheet" type="text/css" href="css/reset.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 </head>
 
-<Header>GifTastic</Header>
+<h1>GifTastic</h1>
+<!-- funny gifs  -->
+<div id="gif-buttons"></div>
+
+<form id="gif-form">
+  <label id="gif-gen" for="gif-input">Who makes you laugh?</label>
+  <input type="text" id="gif-input">
+
+  <input id="find-gif" type="submit" value="Gif Search">
+</form>
+<br>
 
 <body>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
 
- var queryURL = "https://api.giphy.com/v1/gifs/search?q=puppies&limit=5&api_key=dc6zaTOxFJmzC";
+    var queryURL = "http://api.giphy.com/v1/gifs/search?&q=" + topics + "&limit=10&api_key=g9Ppz9QjUA9a57SESuuFhosLGIrmaUNS";
+    var topics = ["Rupaul", "Kevin Hart",]
 
-    $.ajax({
-      url: queryURL,
-      method: "GET"
-    }).then(function(response) {
-      console.log(response);
-    });
+console.log($(document.body));
+
+    function getGiphyData() {
+
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then(function (response) {
+        console.log(response);
+
+      }
+
+
+  // function gotData(giphy) {
+  //   for (var i = 0; i <giphy.data.length; i++)
+  //   creatImg(data.data[i].images.original.url);
+  // }
+
+    // var topics = ["Tamar Braxton", "Kevin Hart", "Rupaul"];
+    // var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topics + "&limit=10&api_key=g9Ppz9QjUA9a57SESuuFhosLGIrmaUNS";
+
+    // function gifButtons() {
+    //   $("#gif-buttons").empty();
+
+    //   for (var i = 0; i < topics.length; i++) {
+    //     var a = $("<button>");
+    //     a.addClass("gif");
+    //     a.attr("data-name", topics[i]);
+    //     a.text(topics[i]);
+    //     $("#gif-buttons").append(a)
+    //   }
+    // }
+
+    // gifButtons();
+
+    // $.ajax({
+    //   url: queryURL,
+    //   method: "GET"
+    // }).then(function (response) {
+    //   console.log(response);
+    // });
+
+  // make buttons with jquery for each topic
+  // each button will populate their respective gif
+  // 
+
   </script>
 
 </body>
