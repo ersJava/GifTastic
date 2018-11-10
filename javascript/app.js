@@ -28,7 +28,7 @@ $(document).ready(function () {
         $(this).addClass("test");
         var buttonValue = $(this).attr('data-type');
 
-        var queryURL = "http://api.giphy.com/v1/gifs/search?&q=" + buttonValue + "&limit=10&api_key=" + apiKey;
+        var queryURL = "https://api.giphy.com/v1/gifs/search?&q=" + buttonValue + "&limit=10&api_key=" + apiKey;
 
         $.ajax({
             url: queryURL,
@@ -51,7 +51,7 @@ $(document).ready(function () {
 $("#gif-button").on("click", function () {
     $("#imgHolder2").empty();
     var inputVal = $input.val();
-    var queryURL = "http://api.giphy.com/v1/gifs/search?&q=" + inputVal + "&limit=10&api_key=" + apiKey;
+    var queryURL = "https://api.giphy.com/v1/gifs/search?&q=" + inputVal + "&limit=10&api_key=" + apiKey;
 
     $.ajax({
         url: queryURL,
@@ -74,7 +74,7 @@ $submit.on('click', function (event) {
     // topics.push(gif);
     imgHolder.empty();
     var inputVal = $input.val();
-    var queryURL = "http://api.giphy.com/v1/gifs/search?&q=" + inputVal + "&limit=10&api_key=" + apiKey;
+    var queryURL = "https://api.giphy.com/v1/gifs/search?&q=" + inputVal + "&limit=10&api_key=" + apiKey;
     $.ajax({
         url: queryURL,
         method: "GET"
