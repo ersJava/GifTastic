@@ -38,3 +38,9 @@ button {
 body {
     background-image: url(ep_naturalblack.png); 
 }
+
+div {
+    color: rgb(34, 205, 218);
+    font-size: 20px;
+    padding: 10px;
+}

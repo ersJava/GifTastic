@@ -1,129 +1,130 @@
-$(document).ready(function () {
 
-    // VARIABLES
-    // -----------------------------
+    var imgHolder = $('#image-holder');
     var $input = $('#input');
     var $submit = $('#submit');
     var apiKey = "g9Ppz9QjUA9a57SESuuFhosLGIrmaUNS";
-    var $imgHolder = $('.image-holder');
-    var topics = ["Rupaul", "Kevin Hart", "Tamar Braxton"];
-    var queryURL = "http://api.giphy.com/v1/gifs/search?&q=" + topics + "&limit=10&api_key=" + apiKey;
 
 
+$(document).ready(function () {
 
     // FUNCTIONS
     // -------------------------------
-
-    // Prepopulated buttons
-    function gifButtons() {
-        $("#gif-button").empty();
-
+    var topics = ["Rupaul", "Kevin Hart", "Tamar Braxton", "French Bulldogs"];
+    function renderButtons() {
+        $("#image-holder2").empty();
         for (var i = 0; i < topics.length; i++) {
             var a = $("<button>");
             a.addClass("gif");
-            a.attr("data-name", topics[i]);
+            a.attr("data-type", topics[i]);
             a.text(topics[i]);
-            $("#gif-button").append(a);
+            $("#image-holder2").append(a);
         }
-    };
+    }
 
-    // Show gifs of prepopulated buttons
-    function getTopic() {
-        var gif = $(this).attr("data-name")
+    renderButtons();
+    $(document).on("click",'.gif',function(){
+        $(this).addClass("test");
+        var buttonValue=$(this).attr('data-type');
+
+        var queryURL = "http://api.giphy.com/v1/gifs/search?&q=" + buttonValue + "&limit=10&api_key=" + apiKey;
+    
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (response) {
+        for (var i = 0; i < response.data.length; i++) {
+            var gifImgUrl = response.data[i].images.downsized.url;
+            var rating = response.data[i].rating;
+            createGif(gifImgUrl, rating);
+        }
+    })
+        
+
+    });
+    
+    
+    })
+
+    // suppose to populate gifs of buttons in topics array
+    $("#gif-button").on("click", function () {
+        $("#imgHolder2").empty();
+        var inputVal = $input.val();
+        var queryURL = "http://api.giphy.com/v1/gifs/search?&q=" + inputVal + "&limit=10&api_key=" + apiKey;
+
         $.ajax({
             url: queryURL,
             method: "GET"
         }).then(function (response) {
-            var rating = data.data[i].rating;
-            var divRating = $("<div>").text("Rating " + rating);
+            var gifImgUrl = response.data[i].images.downsized.url;
+            var topicsImage = $("<img>");
+            topicsImage.attr("src", gifImgUrl);
+            topicsImage.attr("alt", "cat image");
+
+            $("#imgHolder2").prepend(topicsImage);
 
         });
-    }
 
-    function createTopic() {
-// gets gifs from prepopulated buttons
-    }
+    })
 
-    // need to make still and animated
-
-
-    // User adds gify function - followed a step by step youtube video to get the user's input 
     $submit.on('click', function (event) {
         event.preventDefault();
-        $imgHolder.empty();
+        // var gif = $("#gif-input").val();
+        // topics.push(gif);
+        imgHolder.empty();
         var inputVal = $input.val();
-        getGiphy(inputVal);
+        var queryURL = "http://api.giphy.com/v1/gifs/search?&q=" + inputVal + "&limit=10&api_key=" + apiKey;
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (response) {
+            for (var i = 0; i < response.data.length; i++) {
+                var gifImgUrl = response.data[i].images.downsized.url;
+                var rating = response.data[i].rating;
+                createGif(gifImgUrl, rating);
+            }
+        })
         $input.val(' ');
+        renderButtons();
+
     });
 
-    function getGiphy(inputVal) {
-        $.get("http://api.giphy.com/v1/gifs/search?&q=" + inputVal + "&limit=10&api_key=" + apiKey)
-            .done(function (data) {
-                for (var i = 0; i < 10; i++) {
-                    var gifImg = data.data[i].images.downsized.url;
-                    createGif(gifImg);
 
-                }
-
-            });
-    };
-
-    function createGif(gifImg) {
+    function createGif(gifImg, rating) {
         var $newImg = $('<img>');
         $newImg.attr('src', gifImg);
-        var rating = data.data[i].rating;
         var divRating = $("<div>").text("Rating " + rating);
-
-        $imgHolder.prepend($newImg);
+        imgHolder.prepend($newImg);
+        imgHolder.prepend(divRating);
     }
 
-    var queryURL = "http://api.giphy.com/v1/gifs/search?&q=" + topics + "&limit=10&api_key=g9Ppz9QjUA9a57SESuuFhosLGIrmaUNS";
+    //suppose to pause gif
+    imgHolder.on("click", function () {
 
-    //        
-    // $.ajax({
-    //     url: queryURL,
-    //     method: "GET"
-    // }).then(function (response) {
-    //     console.log(response);
-    // })
+        var state = $(this).attr("data-state");
 
-    // LOGIC
-    // -------------------------------
-    gifButtons();
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (response) {
+            console.log(response);
+            for (var i = 0; i < response.data.length; i++) {
+                var gifImgUrl = response.data[i].images.downsized.url;
 
-}); //End code
+                if (state === "still") {
+                    $(this).attr("src", $(this).attr("data-animate"));
+                    $(this).attr("data-state", "animate");
+                } else {
+                    $(this).attr("src", $(this).attr("data-still"));
+                    $(this).attr("data-state", "still");
+                }
+            };
+        });
 
-
-
-// console.log($(document.body));
-   // // Variables
-
-
-    //     // Functions
-    //     function getGiphy() {
-
-    //         var topic = $(this).attr("data-name");
-    //        
-
-    //             var gifDiv = $("<div class='gif'>")
-    //             var rating = response.Rating;
-
-    //             var pOne = $("<p>").text("Rating: " + rating);
-    //             gifDiv.append(pOne);
-
-
-    //         })
-    //     }
-
-
-  // function gotData(giphy) {
-  //   for (var i = 0; i <giphy.data.length; i++)
-  //   creatImg(data.data[i].images.original.url);
-  // }
+    });
 
 
 
-    // gifButtons();
 
-  // make buttons with jquery for each topic
-  // each button will populate their respective 
+
+
+
