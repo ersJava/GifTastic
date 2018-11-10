@@ -1,9 +1,7 @@
-
 var imgHolder = $('#image-holder');
 var $input = $('#input');
 var $submit = $('#submit');
 var apiKey = "g9Ppz9QjUA9a57SESuuFhosLGIrmaUNS";
-
 
 $(document).ready(function () {
     var apiKey = "g9Ppz9QjUA9a57SESuuFhosLGIrmaUNS";
@@ -34,16 +32,10 @@ $(document).ready(function () {
             method: "GET"
         }).then(function (response) {
             for (var i = 0; i < response.data.length; i++) {
-                var gifImgUrl = response.data[i].images.downsized.url;
-                var rating = response.data[i].rating;
-                createGif(gifImgUrl, rating);
+                createGif(response.data[i])
             }
         })
-
-
     });
-
-
 })
 
 
@@ -56,12 +48,6 @@ $("#gif-button").on("click", function () {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        var gifImgUrl = response.data[i].images.downsized.url;
-        var topicsImage = $("<img>");
-        topicsImage.attr("src", gifImgUrl);
-        topicsImage.attr("alt", "cat image");
-
-        $("#imgHolder2").prepend(topicsImage);
 
     });
 
@@ -91,19 +77,20 @@ $submit.on('click', function (event) {
 });
 
 
-function createGif(gifImg, rating) {
-    var $newImg = $('<img>');
-    $newImg.attr('src', gifImg);
-    var divRating = $("<div>").text("Rating " + rating);
-    imgHolder.prepend($newImg);
-    imgHolder.prepend(divRating);
+function createGif(data) {
+    var gifImgUrl = data.images.downsized.url;
+    var topicsImage = $("<img>");
+    topicsImage.attr("src", gifImgUrl);
+    topicsImage.attr("alt", "cat image");
+    topicsImage.attr('data-still', data.images.fixed_height_still.url);
+    topicsImage.attr('data-animate', gifImgUrl);
+    topicsImage.addClass('gify');
+
+    imgHolder.prepend(topicsImage)
 }
 
 
-// need to grab the still images
-//toggle jquery function? 
-$(document).on("click", ".image-holder", function() {
-
+$(document).on("click", ".gify", function () {
     var state = $(this).attr("data-state");
 
     if (state === "still") {
