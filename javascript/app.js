@@ -6,12 +6,11 @@ var apiKey = "g9Ppz9QjUA9a57SESuuFhosLGIrmaUNS";
 
 
 $(document).ready(function () {
-  
     var apiKey = "g9Ppz9QjUA9a57SESuuFhosLGIrmaUNS";
 
     // FUNCTIONS
     // -------------------------------
-    var topics = ["Rupaul", "Kevin Hart", "Tamar Braxton", "French Bulldogs"];
+    var topics = ["Rupaul", "Kevin Hart", "Tamar Braxton", "French Bulldogs", "French Fries"];
     function renderButtons() {
         $("#image-holder2").empty();
         for (var i = 0; i < topics.length; i++) {
@@ -70,6 +69,7 @@ $("#gif-button").on("click", function () {
 
 $submit.on('click', function (event) {
     event.preventDefault();
+    // not sure why this is not pushing to make a new button
     // var gif = $("#gif-input").val();
     // topics.push(gif);
     imgHolder.empty();
@@ -99,27 +99,18 @@ function createGif(gifImg, rating) {
     imgHolder.prepend(divRating);
 }
 
-//suppose to pause gif
-imgHolder.on("click", function () {
+
+// need to grab the still images
+//toggle jquery function? 
+$(document).on("click", ".image-holder", function() {
 
     var state = $(this).attr("data-state");
 
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-    }).then(function (response) {
-        console.log(response);
-        for (var i = 0; i < response.data.length; i++) {
-            var gifImgUrl = response.data[i].images.downsized.url;
-
-            if (state === "still") {
-                $(this).attr("src", $(this).attr("data-animate"));
-                $(this).attr("data-state", "animate");
-            } else {
-                $(this).attr("src", $(this).attr("data-still"));
-                $(this).attr("data-state", "still");
-            }
-        };
-    });
-
+    if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+    } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+    }
 });
